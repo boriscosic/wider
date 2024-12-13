@@ -1,0 +1,23 @@
+builds:
+- id: wider
+  skip: true
+archives:
+- id: wider
+  name_template: "{{ .TagName }}.zip"
+  wrap_in_directory: false
+  format: zip
+  files:
+  - LICENSE
+  - wider.sh
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+release:
+  ids:
+  - wider
+  name_template: "{{ .Tag }}"
+  extra_files:
+    - glob: ./*.zip
