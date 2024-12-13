@@ -4,15 +4,15 @@ Get pods and associated node information. Extend the output with custom-columns 
 ## Installation
 This is temporary until plugin is added to krew index
 
-`$ kubectl krew index add foo https://github.com/boriscosic/wider.git`
-`$ kubectl krew index list`
-`$ kubectl krew install boriscosic/wider`
+- `kubectl krew index add foo https://github.com/boriscosic/wider.git`
+- `kubectl krew index list`
+- `kubectl krew install boriscosic/wider`
 
 ## Examples
-- `$ kubectl wider`
-- `$ kubectl wider -n istio-system -o custom-columns="NAME:.metadata.name,NODE:.node.metadata.name`
-- `$ kubectl wider -l app=istio-gateway -n istio-system`
-- `$ kubectl wider -o custom-columns="NAME:.metadata.name,NODE:.node.metadata.name,IP:.status.podIP,ZONE:.node.metadata.labels.topology\.kubernetes\.io/zone" -n kube-system -l k8s-app=kube-dns`
+- `kubectl wider`
+- `kubectl wider -n istio-system -o custom-columns="NAME:.metadata.name,NODE:.node.metadata.name`
+- `kubectl wider -l app=istio-gateway -n istio-system`
+- `kubectl wider -o custom-columns="NAME:.metadata.name,NODE:.node.metadata.name,IP:.status.podIP,ZONE:.node.metadata.labels.topology\.kubernetes\.io/zone" -n kube-system -l k8s-app=kube-dns`
 
 ```
 POD                    NODE                                        PROVIDER ID
