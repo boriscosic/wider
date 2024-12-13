@@ -4,7 +4,7 @@ Get pods and associated node information. Extend the output with custom-columns 
 ## Installation
 This is temporary until plugin is added to krew index
 
-- `kubectl krew index add foo https://github.com/boriscosic/wider.git`
+- `kubectl krew index add boriscosic https://github.com/boriscosic/wider.git`
 - `kubectl krew index list`
 - `kubectl krew install boriscosic/wider`
 
