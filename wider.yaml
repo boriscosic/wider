@@ -10,6 +10,7 @@ spec:
       - key: "os"
         operator: "In"
         values:
+        - windows
         - darwin
         - linux
     uri: https://github.com/boriscosic/wider/releases/download/v0.0.1/v0.0.1.zip
@@ -24,6 +25,6 @@ spec:
   description: |
     Get pods and associated node information. Extend the output with custom-columns 
     by leveraging keys from pod or node specs. 
-    Examples:
+    Examples: 
     `$ kubectl wider`
     `$ kubectl wider -n istio-system -o custom-columns="NAME:.metadata.name,NODE:.node.metadata.name` 

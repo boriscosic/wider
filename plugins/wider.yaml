@@ -10,6 +10,7 @@ spec:
       - key: "os"
         operator: "In"
         values:
+        - windows
         - darwin
         - linux
     uri: https://github.com/boriscosic/wider/releases/download/v0.0.1/v0.0.1.zip
