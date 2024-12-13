@@ -1,0 +1,7 @@
+name: "wider"
+shortDesc: "Get pod and associated node information with one command"
+longDesc: >
+  Get pods and associated node information. Extend the output with custom-columns 
+  by leveraging keys from pod or node specs. 
+example: "kubectl wider -n istio-system -o custom-columns="NAME:.metadata.name,NODE:.node.metadata.name"
+command: ./wider.sh
