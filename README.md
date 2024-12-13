@@ -1,4 +1,7 @@
 # Wider
+
+<img alt="wider.png" height="250" src="logo/wider.png" width="250"/>
+
 Get pods and associated node information. Extend the output with custom-columns by leveraging keys from pod or node specs. Use the standard -n or -l for namespace or label filters.
 
 ## Installation
