@@ -10,11 +10,9 @@ spec:
       - {key: os, operator: In, values: [darwin, linux]}
     {{addURIAndSha "https://github.com/boriscosic/wider/releases/download/{{ .TagName }}/{{ .TagName }}.zip" .TagName }}
     files:
-    - from: "*.sh"
+    - from: "*"
       to:  "."
-    - from: "LICENSE"
-      to: "."
-    bin: "wider.sh"
+    bin: "kubectl-wider"
   shortDescription: >-
     Get pod and associated node information with one command
   homepage: https://github.com/boriscosic/wider
