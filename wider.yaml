@@ -13,7 +13,7 @@ spec:
         - darwin
         - linux
     uri: https://github.com/boriscosic/wider/releases/download/v0.0.1/v0.0.1.zip
-    sha256: d7079b79bf4e10e55ded435a2e862efe310e019b6c306a8ff04191238ef4b2b4
+    sha256: cf087e265619cdedc984a359308f375ae9ebef900e2c83b45316c3e55601b87d
     files:
     - from: "*"
       to: "."
