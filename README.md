@@ -2,7 +2,9 @@
 
 <img alt="wider.png" height="250" src="logo/wider.png" width="250"/>
 
-Get pods and associated node information. Extend the output with custom-columns by leveraging keys from pod or node specs. Use the standard -n or -l for namespace or label filters.
+Get pods and associated node information. Extend the output with custom-columns by leveraging keys from pod and node specs. Use the standard -n or -l for namespace or label filters.
+
+Pod details remains top level, node information is added under `.node` key. 
 
 ## Installation
 This is temporary until plugin is added to krew index
