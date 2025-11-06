@@ -1,12 +1,29 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	corev1 "k8s.io/api/core/v1"
 	"os"
+	"sigs.k8s.io/yaml"
 	"strings"
 	"text/tabwriter"
 )
+
+func (o *Options) printJSON(podNodes []PodWithWider) error {
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetIndent("", "  ")
+	return encoder.Encode(podNodes)
+}
+
+func (o *Options) printYAML(podNodes []PodWithWider) error {
+	data, err := yaml.Marshal(podNodes)
+	if err != nil {
+		return fmt.Errorf("failed to marshal to YAML: %w", err)
+	}
+	fmt.Println(string(data))
+	return nil
+}
 
 func (o *Options) printCustomColumns(podNodes []PodWithWider) error {
 	// Parse custom-columns format

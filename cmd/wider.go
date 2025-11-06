@@ -109,8 +109,18 @@ Examples:
 }
 
 func (o *Options) Validate() error {
-	if o.OutputFormat != "" && !strings.HasPrefix(o.OutputFormat, "custom-columns=") {
-		return fmt.Errorf("unsupported output format: %s (only custom-columns is supported)", o.OutputFormat)
+	if o.OutputFormat != "" {
+		isValid := false
+
+		if o.OutputFormat == "json" || o.OutputFormat == "yaml" {
+			isValid = true
+		} else if strings.HasPrefix(o.OutputFormat, "custom-columns=") {
+			isValid = true
+		}
+
+		if !isValid {
+			return fmt.Errorf("unsupported output format: %s (supported: json, yaml, custom-columns=...)", o.OutputFormat)
+		}
 	}
 	return nil
 }
@@ -124,17 +134,17 @@ func (o *Options) Run() error {
 		ns = ""
 	}
 
-	needsNode := false
 	needsSA := false
 	needsPVC := false
+
+	if o.OutputFormat == "json" || o.OutputFormat == "yaml" {
+		needsPVC = true
+		needsSA = true
+	}
 
 	nodeMap := make(map[string]*corev1.Node)
 	saMap := make(map[string]*corev1.ServiceAccount)
 	pvcMap := make(map[string]*corev1.PersistentVolumeClaim)
-
-	if strings.Contains(o.OutputFormat, ".node") {
-		needsNode = true
-	}
 
 	if strings.Contains(o.OutputFormat, ".sa") || strings.Contains(o.OutputFormat, ".serviceAccount") {
 		needsSA = true
@@ -153,16 +163,14 @@ func (o *Options) Run() error {
 	}
 
 	// Get nodes
-	if needsNode {
-		nodes, err := o.Clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
-		if err != nil {
-			return fmt.Errorf("failed to list nodes: %w", err)
-		}
+	nodes, err := o.Clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to list nodes: %w", err)
+	}
 
-		// Create node map for quick lookup
-		for i := range nodes.Items {
-			nodeMap[nodes.Items[i].Name] = &nodes.Items[i]
-		}
+	// Create node map for quick lookup
+	for i := range nodes.Items {
+		nodeMap[nodes.Items[i].Name] = &nodes.Items[i]
 	}
 
 	if needsPVC {
@@ -201,7 +209,7 @@ func (o *Options) Run() error {
 
 		// Get ServiceAccount
 		var sa *corev1.ServiceAccount
-		if pod.Spec.ServiceAccountName != "" {
+		if pod.Spec.ServiceAccountName != "" && len(saMap) > 0 {
 			saKey := pod.Namespace + "/" + pod.Spec.ServiceAccountName
 			sa = saMap[saKey]
 			// If not in map, try to fetch it directly
@@ -216,7 +224,7 @@ func (o *Options) Run() error {
 		// Get PVCs for this pod
 		var podPVCs []*corev1.PersistentVolumeClaim
 		for _, vol := range pod.Spec.Volumes {
-			if vol.PersistentVolumeClaim != nil {
+			if vol.PersistentVolumeClaim != nil && len(pvcMap) > 0 {
 				pvcKey := pod.Namespace + "/" + vol.PersistentVolumeClaim.ClaimName
 				if pvc, ok := pvcMap[pvcKey]; ok {
 					podPVCs = append(podPVCs, pvc)
@@ -241,6 +249,10 @@ func (o *Options) Run() error {
 	// Output
 	if strings.HasPrefix(o.OutputFormat, "custom-columns=") {
 		return o.printCustomColumns(podNodes)
+	} else if o.OutputFormat == "json" {
+		return o.printJSON(podNodes)
+	} else if o.OutputFormat == "yaml" {
+		return o.printYAML(podNodes)
 	}
 
 	return o.printDefault(podNodes)
