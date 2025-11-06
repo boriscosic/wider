@@ -4,7 +4,7 @@ before:
     - go mod download
 builds:
   - id: kubectl-wider
-    main: ./cmd/kubectl-wider
+    main: ./cmd
     binary: kubectl-wider
     env:
       - CGO_ENABLED=0
