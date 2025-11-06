@@ -22,6 +22,7 @@ type PodWithWider struct {
 type Options struct {
 	Namespace     string
 	OutputFormat  string
+	LabelSelector string
 	AllNamespaces bool
 	Clientset     *kubernetes.Clientset
 	ConfigFlags   *clientcmd.ClientConfigLoadingRules
@@ -76,9 +77,13 @@ Examples:
   # List pods in all namespaces
   kubectl wider -A
 
-  # Support for nodes, serviceAccount, pvc
-  kubectl wider -A
+  # List pods with label selector
+  kubectl wider -l app=myapp
+  kubectl wider -l environment=production,tier=frontend
 
+  # Combine label selector with namespace
+  kubectl wider -n default -l app=nginx
+	
   # Custom columns output
   kubectl wider -o custom-columns=NAME:.pod.metadata.name,NODE:.node.metadata.name,OS:.node.metadata.labels.kubernetes\.io/os
 
@@ -98,6 +103,7 @@ Examples:
 	cmd.Flags().StringVarP(&opts.Namespace, "namespace", "n", "", "Namespace to query (defaults to current context namespace)")
 	cmd.Flags().StringVarP(&opts.OutputFormat, "output", "o", "", "Output format. One of: (json, yaml, custom-columns) (e.g., custom-columns=\"NAME:.pod.metadata.name,NODE:.node.metadata.name,OS:.node.metadata.labels.kubernetes\\.io/os\")")
 	cmd.Flags().BoolVarP(&opts.AllNamespaces, "all-namespaces", "A", false, "Query all namespaces")
+	cmd.Flags().StringVarP(&opts.LabelSelector, "selector", "l", "", "Selector (label query) to filter on, supports '=', '==', and '!='.(e.g. -l key1=value1,key2=value2)")
 
 	return cmd
 }
@@ -139,7 +145,9 @@ func (o *Options) Run() error {
 	}
 
 	// Get pods
-	pods, err := o.Clientset.CoreV1().Pods(ns).List(ctx, metav1.ListOptions{})
+	pods, err := o.Clientset.CoreV1().Pods(ns).List(ctx, metav1.ListOptions{
+		LabelSelector: o.LabelSelector,
+	})
 	if err != nil {
 		return fmt.Errorf("failed to list pods: %w", err)
 	}
