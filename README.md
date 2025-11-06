@@ -53,6 +53,11 @@ Supported resources:
 - `.serviceAccount` or `.sa`
 - `.pvc` or `.pvcs`
 
+## Outputs
+
+kubectl-wider supports outputs to yaml and json. To use those specify `-o yaml` or `-o json`
+which will include all resources.
+
 ## Examples
 
 - `kubectl wider`
