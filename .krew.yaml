@@ -33,7 +33,7 @@ spec:
         matchLabels:
           os: windows
           arch: amd64
-      {{addURIAndSha "https://github.com/boriscosic/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_windows_amd64.zip" .TagName | indent 6}}
+      {{addURIAndSha "https://github.com/boriscosic/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_windows_amd64.tar.gz" .TagName | indent 6}}
       bin: kubectl-wider.exe
   shortDescription: Get pod and associated resource information with one command
   homepage: https://github.com/boriscosic/kubectl-wider
