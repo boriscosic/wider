@@ -86,6 +86,12 @@ Examples:
 	
   # Custom columns output
   kubectl wider -o custom-columns=NAME:.pod.metadata.name,NODE:.node.metadata.name,OS:.node.metadata.labels.kubernetes\.io/os
+	
+  # JSON output
+  kubectl wider -o json
+  
+  # YAML output
+  kubectl wider -o yaml
 
   More information is available at the project website:
   https://github.com/boriscosic/wider`,
