@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://mdxjs.com">
-    <img alt="wider.png" height="250" src="logo/wider.png" width="250"/>
+    <img alt="wider.png" height="250" src="assets/wider.png" width="250"/>
   </a>
 </p>
 
