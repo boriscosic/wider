@@ -9,32 +9,32 @@ spec:
         matchLabels:
           os: darwin
           arch: amd64
-      {{addURIAndSha "https://github.com/ahmetb/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_darwin_amd64.tar.gz" .TagName }}
+      {{addURIAndSha "https://github.com/boriscosic/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_darwin_amd64.tar.gz" .TagName }}
       bin: kubectl-wider
     - selector:
         matchLabels:
           os: darwin
           arch: arm64
-      {{addURIAndSha "https://github.com/ahmetb/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_darwin_arm64.tar.gz" .TagName }}
+      {{addURIAndSha "https://github.com/boriscosic/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_darwin_arm64.tar.gz" .TagName }}
       bin: kubectl-wider
     - selector:
         matchLabels:
           os: linux
           arch: amd64
-      {{addURIAndSha "https://github.com/ahmetb/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_linux_amd64.tar.gz" .TagName }}
+      {{addURIAndSha "https://github.com/boriscosic/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_linux_amd64.tar.gz" .TagName }}
       bin: kubectl-wider
     - selector:
         matchLabels:
           os: windows
           arch: amd64
-      {{addURIAndSha "https://github.com/ahmetb/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_windows_amd64.tar.gz" .TagName }}
+      {{addURIAndSha "https://github.com/boriscosic/kubectl-wider/releases/download/{{ .TagName }}/kubectl-wider_{{ .TagName }}_windows_amd64.tar.gz" .TagName }}
       bin: kubectl-wider.exe
   shortDescription: >-
     Get pod and associated resource information with one command
   homepage: https://github.com/boriscosic/wider
   description: |
     Get pods and associated resource information. Extend the output with custom-columns 
-    by leveraging keys from the spec group. 
+    by leveraging keys from the spec group. See full docs and features on homepage.
     Examples:
     `$ kubectl wider`
     `$ kubectl wider -n istio-system -o custom-columns="NAME:.pod.metadata.name,NODE:.node.metadata.name`
