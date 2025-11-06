@@ -1,19 +1,60 @@
-# Wider
+<p align="center">
+  <a href="https://mdxjs.com">
+    <img alt="wider.png" height="250" src="logo/wider.png" width="250"/>
+  </a>
+</p>
 
-<img alt="wider.png" height="250" src="logo/wider.png" width="250"/>
+# kubectl wider
 
-Get pods and associated node information. Extend the output with custom-columns by leveraging keys from pod and node specs. Use the standard -n or -l for namespace or label filters.
+A kubectl plugin to extend pod output with attached relationships. Extend the output with custom-columns by leveraging keys from pod and node specs. Use the standard -n or -l for namespace or label filters.
 
-Pod details remains top level, node information is added under `.node` key. 
+Supports extensions on node, service account and pvc.
 
-## Installation
-This is temporary until plugin is added to krew index
+## Custom columns
 
-- `kubectl krew index add boriscosic https://github.com/boriscosic/wider.git`
-- `kubectl krew update`
-- `kubectl krew install boriscosic/wider`
+Use them like you would when retrieving a resource, except, add a resource for prefix.
+
+For example:
+
+Before:
+`kubectl get nodes -o custom-columns="NAME:.metadata.name,OS:.metadata.labels.kubernetes\.io/os"`
+
+```
+NAME      OS
+homek8s   linux
+homek8s   linux
+homek8s   linux
+```
+
+After (with .node):
+`kubectl wider -o custom-columns="NAME:.node.metadata.name,OS:.node.metadata.labels.kubernetes\.io/os"`
+
+```
+NAME      OS
+homek8s   linux
+homek8s   linux
+homek8s   linux
+```
+
+The above example is not great because because we're still retrieving a single resource. 
+To retrieve details across multiple resources, for example, what OS do my pods run on, you would use:
+`kubectl wider -o custom-columns="POD:.pod.metadata.name,NODE:.node.metadata.name,OS:.node.metadata.labels.kubernetes\.io/os"`
+
+```
+POD                       NODE      OS
+pod-6cfd57b89f-4mcgm      homek8s   linux
+pod-665994f986-wqnxl      homek8s   linux
+pod-86dc786d97-mgtb6      homek8s   linux
+```
+
+Supported resources:
+- `.node`
+- `.pod`
+- `.serviceAccount` or `.sa`
+- `.pvc` or `.pvcs`
 
 ## Examples
+
 - `kubectl wider`
 - `kubectl wider -n istio-system -o custom-columns="NAME:.metadata.name,NODE:.node.metadata.name`
 - `kubectl wider -l app=istio-gateway -n istio-system`

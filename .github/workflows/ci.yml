@@ -1,8 +1,7 @@
-name: release
+name: ci
 on:
   push:
-    tags:
-      - 'v*.*.*'
+  pull_request:
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
@@ -17,8 +16,4 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
-          args: release --clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      - name: Update new version in krew-index
-        uses: rajatjindal/krew-release-bot@v0.0.47
+          args: release --snapshot --clean

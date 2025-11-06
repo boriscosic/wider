@@ -1,23 +1,28 @@
+version: 2
+before:
+  hooks:
+    - go mod download
 builds:
-- id: wider
-  skip: true
+  - id: kubectl-wider
+    main: ./cmd/kubectl-wider
+    binary: kubectl-wider
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
 archives:
-- id: wider
-  name_template: "{{ .TagName }}.zip"
-  wrap_in_directory: false
-  format: zip
-  files:
-  - LICENSE
-  - wider.sh
-changelog:
-  sort: asc
-  filters:
-    exclude:
-    - '^docs:'
-    - '^test:'
-release:
-  ids:
-  - wider
-  name_template: "{{ .Tag }}"
-  extra_files:
-    - glob: ./*.zip
+  - builds:
+      - kubectl-wider
+    name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    wrap_in_directory: false
+    format: tar.gz
+    files:
+      - LICENSE
